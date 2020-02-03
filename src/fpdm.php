@@ -950,13 +950,13 @@ if (!call_user_func_array('class_exists', $__tmp)) {
                         if ($verbose_set) {
                             echo "<br>Change checkbox of the field $name at line $field_checkbox_line to value [$value]";
                         }
-                        $state = $value;
+                        $state = 'On';
                         if (!$value || strtolower($value) === "off" ) {
                             $state = 'Off';
                         }
                         if(isset($this->value_entries["$name"]['infos']['checkbox_state_on']) &&
                         isset($this->value_entries["$name"]['infos']['checkbox_state_off'])) {
-                            $state = $this->value_entries["$name"]['infos']['checkbox_no'];
+                            $state = $this->value_entries["$name"]['infos']['checkbox_on'];
                             if ($value) {
                                 $state = $this->value_entries["$name"]['infos']['checkbox_yes'];
                             }
