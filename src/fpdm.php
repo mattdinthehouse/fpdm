@@ -951,7 +951,7 @@ if (!call_user_func_array('class_exists', $__tmp)) {
                             echo "<br>Change checkbox of the field $name at line $field_checkbox_line to value [$value]";
                         }
                         $state = $value;
-                        if (!$value) {
+                        if (!$value || strtolower($value) === "off" ) {
                             $state = 'Off';
                         }
                         if(isset($this->value_entries["$name"]['infos']['checkbox_state_on']) &&
