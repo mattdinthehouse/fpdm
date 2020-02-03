@@ -961,7 +961,6 @@ if (!call_user_func_array('class_exists', $__tmp)) {
                                 $state = $this->value_entries["$name"]['infos']['checkbox_yes'];
                             }
                         }
-                        }
                         $CurLine =$this->pdf_entries[$field_checkbox_line];
                         $OldLen=strlen($CurLine);
                         $CurLine = '/AS /'.$state;
