@@ -944,17 +944,22 @@ if (!call_user_func_array('class_exists', $__tmp)) {
             $verbose_set=($this->verbose&&($this->verbose_level>1));
             //Get the line(s) of the misc field values
             if (isset($this->value_entries["$name"])) {
-                if (isset($this->value_entries["$name"]["infos"]["checkbox_state_line"])
-                && isset($this->value_entries["$name"]["infos"]["checkbox_no"])
-                && isset($this->value_entries["$name"]["infos"]["checkbox_yes"])) {
+                if (isset($this->value_entries["$name"]["infos"]["checkbox_state_line"])) {
                     $field_checkbox_line=$this->value_entries["$name"]["infos"]["checkbox_state_line"];
                     if ($field_checkbox_line) {
                         if ($verbose_set) {
                             echo "<br>Change checkbox of the field $name at line $field_checkbox_line to value [$value]";
                         }
-                        $state = $this->value_entries["$name"]["infos"]["checkbox_no"];
-                        if ($value) {
-                            $state = $this->value_entries["$name"]["infos"]["checkbox_yes"];
+                        $state = 'On';
+                        if (!$value || strtolower($value) === "off" ) {
+                            $state = 'Off';
+                        }
+                        if(isset($this->value_entries["$name"]['infos']['checkbox_state_on']) &&
+                        isset($this->value_entries["$name"]['infos']['checkbox_state_off'])) {
+                            $state = $this->value_entries["$name"]['infos']['checkbox_on'];
+                            if ($value) {
+                                $state = $this->value_entries["$name"]['infos']['checkbox_yes'];
+                            }
                         }
                         $CurLine =$this->pdf_entries[$field_checkbox_line];
                         $OldLen=strlen($CurLine);
