@@ -576,7 +576,8 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 				require_once("export/pdf/pdftk.php");//Of course don't forget to bridge to PDFTK!
 
 				$tmp_file=false;
-				$pdf_file=resolve_path(fix_path(dirname(__FILE__).'/'.$this->pdf_source));      //string: full pathname to the input pdf , a form file
+				// $pdf_file=resolve_path(fix_path(dirname(__FILE__).'/'.$this->pdf_source));      //string: full pathname to the input pdf , a form file
+				$pdf_file = $this->pdf_source;
 				
 				if($this->fdf_source) { //FDF file provided
 					$fdf_file=resolve_path(fix_path(dirname(__FILE__).'/'.$this->fdf_source));
@@ -626,7 +627,7 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 					$this->Error($ret["return"]);
 			}
 			
-			//$this->buffer=$this->get_buffer($pdf_file);
+			$buffer=$this->get_buffer($pdf_file);
 			
 			
 			$dest=strtoupper($dest);
@@ -658,13 +659,13 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 						header('Content-Type: application/pdf');
 						if(headers_sent())
 							$this->Error('Some data has already been output, can\'t send PDF file');
-						header('Content-Length: '.strlen($this->get_buffer()));
+						header('Content-Length: '.strlen($buffer));
 						header('Content-Disposition: inline; filename="'.$name.'"');
 						header('Cache-Control: private, max-age=0, must-revalidate');
 						header('Pragma: public');
 						ini_set('zlib.output_compression','0');
 					}
-					echo $this->get_buffer();
+					echo $buffer;
 					break;
 				case 'D':
 					//Download file
@@ -673,7 +674,7 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 					header('Content-Type: application/x-download');
 					if(headers_sent())
 						$this->Error('Some data has already been output, can\'t send PDF file');
-					header('Content-Length: '.strlen($this->get_buffer()));
+					header('Content-Length: '.strlen($buffer));
 					header('Content-Disposition: attachment; filename="'.$name.'"');
 					
 					header("Expires: Mon, 26 Jul 1997 05:00:00 GMT"); // Date in the past
@@ -685,7 +686,7 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 					header('Cache-Control: private, max-age=0, must-revalidate');
 					header('Pragma: public,no-cache');
 					ini_set('zlib.output_compression','0');
-					echo $this->get_buffer();
+					echo $buffer;
 					break;
 				case 'F':
 					//Save to local file
@@ -694,12 +695,12 @@ if (!call_user_func_array('class_exists', $__tmp)) {
 					if(!$f)
 						$this->Error('Unable to create output file: '.$name.' (currently opened under Acrobat Reader?)');
 						
-					fwrite($f,$this->get_buffer(),strlen($this->get_buffer()));
+					fwrite($f,$buffer,strlen($buffer));
 					fclose($f);
 					break;
 				case 'S':
 					//Return as a string
-					return $this->get_buffer();
+					return $buffer;
 				default:
 					$this->Error('Incorrect output destination: '.$dest);
 			}
